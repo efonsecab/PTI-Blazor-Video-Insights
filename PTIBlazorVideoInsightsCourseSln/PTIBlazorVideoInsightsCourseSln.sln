@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30406.217
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PTIBlazorVideoInsightsCourse.Server", "PTIBlazorVideoInsightsCourse\Server\PTIBlazorVideoInsightsCourse.Server.csproj", "{9C9E1299-8443-4A16-AE27-3A678268AA93}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PTIBlazorVideoInsightsCourse.Client", "PTIBlazorVideoInsightsCourse\Client\PTIBlazorVideoInsightsCourse.Client.csproj", "{00D63D27-228F-40E7-B378-25DEB42C690E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PTIBlazorVideoInsightsCourse.Shared", "PTIBlazorVideoInsightsCourse\Shared\PTIBlazorVideoInsightsCourse.Shared.csproj", "{E3A37C29-9A2A-4E6F-B1A4-9AB922A91DFF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9C9E1299-8443-4A16-AE27-3A678268AA93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C9E1299-8443-4A16-AE27-3A678268AA93}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C9E1299-8443-4A16-AE27-3A678268AA93}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C9E1299-8443-4A16-AE27-3A678268AA93}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00D63D27-228F-40E7-B378-25DEB42C690E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00D63D27-228F-40E7-B378-25DEB42C690E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00D63D27-228F-40E7-B378-25DEB42C690E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00D63D27-228F-40E7-B378-25DEB42C690E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E3A37C29-9A2A-4E6F-B1A4-9AB922A91DFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E3A37C29-9A2A-4E6F-B1A4-9AB922A91DFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E3A37C29-9A2A-4E6F-B1A4-9AB922A91DFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E3A37C29-9A2A-4E6F-B1A4-9AB922A91DFF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {48C07B46-8FB7-4103-B30F-15EE0B18D380}
+	EndGlobalSection
+EndGlobal
