@@ -5,8 +5,11 @@ using PTIBlazorVideoInsightsCourse.Server.Controllers;
 using PTIBlazorVideoInsightsCourse.Shared;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
+using LV = PTIBlazorVideoInsightsCourse.Shared.Models.AzureVideoIndexer.ListVideos;
 
 namespace PTIBlazorVideoInsightsCourse.AutomatedTests.Server
 {
@@ -41,6 +44,40 @@ namespace PTIBlazorVideoInsightsCourse.AutomatedTests.Server
             VideoIndexerController controller =
                 new VideoIndexerController(this.AzureConfiguration);
             var result = await controller.GetAccountAccessToken(false);
+            Assert.IsTrue(result is OkObjectResult, "Invalid result");
+        }
+
+        [TestMethod]
+        public async Task GetVideoAccessTokenAsync()
+        {
+            VideoIndexerController controller =
+                new VideoIndexerController(this.AzureConfiguration);
+            OkObjectResult videosListResult = (OkObjectResult)await controller.ListVideos();
+            var videosList =
+                (LV.ListVideosResponse)videosListResult.Value;
+            var firstVideo = videosList.results.First();
+            var result = await controller.GetVideoAccessToken(firstVideo.id, false);
+            Assert.IsTrue(result is OkObjectResult, "Invalid result");
+        }
+
+        [TestMethod]
+        public async Task GetVideoThumbnailAsync()
+        {
+            VideoIndexerController controller =
+                new VideoIndexerController(this.AzureConfiguration);
+            OkObjectResult videosListResult = (OkObjectResult)await controller.ListVideos();
+            var videosList =
+                (LV.ListVideosResponse)videosListResult.Value;
+            var firstVideo = videosList.results.First();
+            var result = await controller.GetVideoThumbnail(videoId: firstVideo.id, thumbnailId: firstVideo.thumbnailId);
+            Assert.IsTrue(result is OkObjectResult, "Invalid result");
+        }
+
+        [TestMethod]
+        public void GetLocation()
+        {
+            VideoIndexerController controller = new VideoIndexerController(this.AzureConfiguration);
+            var result = controller.GetLocation();
             Assert.IsTrue(result is OkObjectResult, "Invalid result");
         }
     }

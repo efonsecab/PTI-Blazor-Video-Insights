@@ -1,0 +1,25 @@
+﻿@page "/Video/{accountId}/{videoId}/{location}/{videoAccessToken}"
+@inject IJSRuntime JSRuntime
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <iframe width="400" height="400" src="https://www.videoindexer.ai/embed/player/@AccountId/@VideoId/?locale=en&location=@Location&accessToken=@VideoAccessToken" frameborder="0" allowfullscreen></iframe>
+        </div>
+        <div class="col-md-6">
+            <iframe width="400" height="400"
+                    src="https://www.videoindexer.ai/embed/insights/@AccountId/@VideoId/?locale=en&location=@Location&accessToken=@VideoAccessToken"
+                    frameborder="0" allowfullscreen></iframe>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string VideoId { get; set; }
+    [Parameter]
+    public string AccountId { get; set; }
+    [Parameter]
+    public string Location { get; set; }
+    [Parameter]
+    public string VideoAccessToken { get; set; }
+}
