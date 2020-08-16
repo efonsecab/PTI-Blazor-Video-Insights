@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Linq;
+using PTIBlazorVideoInsightsCourse.Shared;
 
 namespace PTIBlazorVideoInsightsCourse.Server
 {
@@ -23,6 +24,9 @@ namespace PTIBlazorVideoInsightsCourse.Server
         public void ConfigureServices(IServiceCollection services)
         {
 
+            var azureConfiguration = 
+            Configuration.GetSection("AzureConfiguration").Get<AzureConfiguration>();
+            services.AddSingleton(azureConfiguration);
             services.AddControllersWithViews();
             services.AddRazorPages();
         }
