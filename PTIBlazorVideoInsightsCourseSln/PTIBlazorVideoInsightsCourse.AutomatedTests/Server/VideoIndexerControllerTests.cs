@@ -5,9 +5,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PTIBlazorVideoInsightsCourse.Server;
-using PTIBlazorVideoInsightsCourse.Server.Controllers;
 using PTIBlazorVideoInsightsCourse.Shared;
 using PTIBlazorVideoInsightsCourse.Shared.Models.AzureVideoIndexer.ListVideos;
+using PTIBlazorVideoInsightsCourse.Shared.Models.AzureVideoIndexer.SearchVideos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,6 +26,7 @@ namespace PTIBlazorVideoInsightsCourse.AutomatedTests.Server
         private AzureConfiguration AzureConfiguration { get; set; }
         private IHttpClientFactory HttpClientFactory { get; }
         private HttpClient ServerClient { get; }
+        private IConfiguration Configuration { get; }
 
         private readonly TestServer Server;
         private readonly ServiceCollection Services;
@@ -37,6 +38,7 @@ namespace PTIBlazorVideoInsightsCourse.AutomatedTests.Server
             configurationBuilder.AddJsonFile("appsettings.json")
                 .AddUserSecrets("5ee6af21-ee0f-4995-b5aa-ae4a9aafda1d");
             IConfiguration configuration = configurationBuilder.Build();
+            this.Configuration = configuration;
             var azureConfiguration = configuration.GetSection("AzureConfiguration").Get<AzureConfiguration>();
             this.AzureConfiguration = azureConfiguration;
             Server = new TestServer(new WebHostBuilder()
@@ -57,6 +59,34 @@ namespace PTIBlazorVideoInsightsCourse.AutomatedTests.Server
         [TestInitialize]
         public void InitializeTests()
         {
+        }
+
+        [TestMethod]
+        public async Task Test_UploadVideo()
+        {
+            UploadVideoModel model =
+                new UploadVideoModel()
+                {
+                    CallbackUrl = this.Configuration["TestUploadVideoCallbackUrl"],
+                    Name = "Automated Test Video",
+                    SendSuccessEmail = true,
+                    VideoUrl = this.Configuration["TestUploadVideoUrl"]
+                };
+            var result = await this.ServerClient
+                .PostAsJsonAsync<UploadVideoModel>("/VideoIndexer/UploadVideo", model);
+            if (result.IsSuccessStatusCode)
+            {
+                Assert.IsTrue(result.IsSuccessStatusCode, result.ReasonPhrase);
+            }
+            else
+            {
+                string errorContent = string.Empty;
+                if (result.Content.Headers.ContentLength > 0)
+                {
+                    errorContent = await result.Content.ReadAsStringAsync();
+                    Assert.Fail($"Reason: {result.ReasonPhrase} - Details: {errorContent}");
+                }
+            }
         }
 
         [TestMethod]
@@ -91,32 +121,30 @@ namespace PTIBlazorVideoInsightsCourse.AutomatedTests.Server
         [TestMethod]
         public async Task Test_GetVideoThumbnailAsync()
         {
-            VideoIndexerController controller =
-                new VideoIndexerController(this.AzureConfiguration, this.HttpClientFactory);
-            OkObjectResult videosListResult = (OkObjectResult)await controller.ListVideos();
-            var videosList =
-                (LV.ListVideosResponse)videosListResult.Value;
-            var firstVideo = videosList.results.First();
-            var result = await controller.GetVideoThumbnail(videoId: firstVideo.id, thumbnailId: firstVideo.thumbnailId);
-            Assert.IsTrue(result is OkObjectResult, "Invalid result");
+            var listVideosResult = await this.ServerClient
+                .GetFromJsonAsync<ListVideosResponse>("/VideoIndexer/ListVideos");
+            Assert.IsNotNull(listVideosResult);
+            var firstVideo = listVideosResult.results.First();
+            var result = await this.ServerClient.GetStringAsync($"/VideoIndexer/GetVideoThumbnail" +
+                $"?videoId={firstVideo.id}&thumbnailId={firstVideo.thumbnailId}");
+            Assert.IsNotNull(result, "Invalid result");
+            Assert.IsTrue(result.Length > 0, "Invalid string");
         }
 
         [TestMethod]
-        public void Test_GetLocation()
+        public async Task Test_GetLocation()
         {
-            VideoIndexerController controller = new VideoIndexerController(this.AzureConfiguration,
-                this.HttpClientFactory);
-            var result = controller.GetLocation();
-            Assert.IsTrue(result is OkObjectResult, "Invalid result");
+            var result = await this.ServerClient.GetStringAsync("VideoIndexer/GetLocation");
+            Assert.IsNotNull(result, "Invalid result");
+            Assert.IsTrue(result.Length > 0, "Invalid string");
         }
 
         [TestMethod]
         public async Task Test_SearchVideosAsync()
         {
-            VideoIndexerController controller =
-                new VideoIndexerController(this.AzureConfiguration, this.HttpClientFactory);
-            var result = await controller.SearchVideos(keyword: "blazor");
-            Assert.IsTrue(result is OkObjectResult, "Invalid result");
+            var result = await this.ServerClient
+                .GetFromJsonAsync<SearchVideosResponse>($"/VideoIndexer/SearchVideos?keyword=blazor");
+            Assert.IsNotNull(result);
         }
     }
 }
