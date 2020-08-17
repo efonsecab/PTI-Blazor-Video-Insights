@@ -8,5 +8,6 @@
     <Folder Include="Models\" />
     <Folder Include="Models\AzureVideoIndexer\" />
     <Folder Include="Models\AzureVideoIndexer\ListVideos\" />
+    <Folder Include="Models\AzureVideoIndexer\SearchVideos\" />
   </ItemGroup>
 </Project>

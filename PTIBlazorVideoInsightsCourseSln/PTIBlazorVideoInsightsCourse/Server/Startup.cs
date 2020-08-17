@@ -26,6 +26,12 @@ namespace PTIBlazorVideoInsightsCourse.Server
 
             var azureConfiguration = 
             Configuration.GetSection("AzureConfiguration").Get<AzureConfiguration>();
+            services.AddHttpClient("VideoIndexerAnonymousApiClient");
+            services.AddHttpClient("VideoIndexerAuthorizedApiClient", configuration =>
+            {
+                configuration.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key",
+                    azureConfiguration.VideoIndexerConfiguration.SubscriptionKey);
+            });
             services.AddSingleton(azureConfiguration);
             services.AddControllersWithViews();
             services.AddRazorPages();
