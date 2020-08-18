@@ -1,5 +1,6 @@
 ﻿@page "/Search"
 @using SV = PTIBlazorVideoInsightsCourse.Shared.Models.AzureVideoIndexer.SearchVideos
+@using PTIBlazorVideoInsightsCourse.Client.CustomComponents
 @inject HttpClient httpClient
 
 <div class="container">
@@ -12,11 +13,7 @@
 
 @if (IsLoading)
 {
-    <div class="d-flex justify-content-center">
-        <div class="spinner-border" role="status">
-            <span class="sr-only">Loading...</span>
-        </div>
-    </div>
+    <LoadingIndicator></LoadingIndicator>
 }
 else
 {
@@ -25,19 +22,11 @@ else
         <div class="row">
             @foreach (var videoInfo in this.FoundVideos.results)
             {
-                <a href="@this.VideosPageUrls[videoInfo.id]">
-                    <div class="card" style="width: 22rem; height:22rem;">
-                        <div class=" card-header" style="height:5em;">
-                            @videoInfo.name
-                        </div>
-                        <img class="card-img-top" src="@this.VideosThumbnails[videoInfo.id]" alt="Card image cap">
-                        <div class="card-body">
-                            <p class="card-text" style="height:10em;">
-                                @videoInfo.description
-                            </p>
-                        </div>
-                    </div>
-                </a>
+                <VideoCard LinkUrl="@this.VideosPageUrls[videoInfo.id]"
+                           ThumbnailSrc="@this.VideosThumbnails[videoInfo.id]"
+                           VideoDescription="@videoInfo.description"
+                           VideoName="@videoInfo.name">
+                </VideoCard>
             }
         </div>
     }
@@ -74,7 +63,7 @@ else
             this.VideosPageUrls.Add(singleVideo.id, link);
         };
         this.IsLoading = false;
-        if (this.FoundVideos.results.Count == 0 )
+        if (this.FoundVideos.results.Count == 0)
         {
             this.Message = "No data found";
         }

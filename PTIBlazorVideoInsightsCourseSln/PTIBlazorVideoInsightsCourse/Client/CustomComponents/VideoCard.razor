@@ -1,0 +1,24 @@
+﻿<a href="@LinkUrl">
+    <div class="card" style="width: 22rem; height:22rem;">
+        <div class=" card-header" style="height:5em;">
+            @VideoName
+        </div>
+        <img class="card-img-top" src="@ThumbnailSrc" alt="Card image cap">
+        <div class="card-body">
+            <p class="card-text" style="height:10em;">
+                @VideoDescription
+            </p>
+        </div>
+    </div>
+</a>
+
+@code {
+    [Parameter]
+    public string LinkUrl { get; set; }
+    [Parameter]
+    public string VideoName { get; set; }
+    [Parameter]
+    public string ThumbnailSrc { get; set; }
+    [Parameter]
+    public string VideoDescription { get; set; }
+}
