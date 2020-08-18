@@ -9,8 +9,27 @@
     <Folder Include="Models\AzureVideoIndexer\" />
     <Folder Include="Models\AzureVideoIndexer\ListVideos\" />
     <Folder Include="Models\AzureVideoIndexer\SearchVideos\" />
+    <Folder Include="Resources\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="System.ComponentModel.Annotations" Version="4.7.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\UploadVideoModel.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>UploadVideoModel.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\UploadVideoModel.es.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>UploadVideoModel.es.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Resources\UploadVideoModel.Designer.cs">
+      <DependentUpon>UploadVideoModel.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\UploadVideoModel.es.Designer.cs">
+      <DependentUpon>UploadVideoModel.es.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
 </Project>

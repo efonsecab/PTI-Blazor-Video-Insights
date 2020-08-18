@@ -1,10 +1,11 @@
 ﻿@using  System.Globalization
 @inject IJSRuntime JSRuntime
 @inject NavigationManager Nav
+@inject Microsoft.Extensions.Localization.IStringLocalizer<LanguageSelector> Loc
 
 <div class="form-group">
     <label>
-        <strong>Select Language:</strong>
+        <strong>@Loc["TextSelectLanguage"]</strong>
     </label>
     <select @bind="Culture" class="form-control">
         @foreach (var culture in supportedCultures)

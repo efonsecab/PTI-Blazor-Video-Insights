@@ -1,5 +1,6 @@
 ﻿@page "/Upload"
 @using PTIBlazorVideoInsightsCourse.Shared
+@inject Microsoft.Extensions.Localization.IStringLocalizer<Upload> Loc
 @inject HttpClient httpClient
 
 <EditForm Model="@this.Model" OnValidSubmit="this.UploadVideo">
@@ -11,29 +12,29 @@
         <div class="form-group">
             <span class="requiredField">*</span>
             <label>
-                Name
+                @Loc["TextName"]
             </label>
-            <InputText class="form-control" placeholder="Type Video Name" @bind-Value="this.Model.Name" />
+            <InputText class="form-control" placeholder="@Loc["TextTypeVideoName"]" @bind-Value="this.Model.Name" />
             <ValidationMessage For="@(() => Model.Name)" />
         </div>
         <div class="from-group">
             <span class="requiredField">*</span>
             <label>
-                Video Url
+                @Loc["TextSourceVideoUrl"]
             </label>
-            <InputText class="form-control" placeholder="Type Source Video Url" @bind-Value="Model.VideoUrl" />
+            <InputText class="form-control" placeholder="@Loc["TextTypeSourceVideoUrl"]" @bind-Value="Model.VideoUrl" />
             <ValidationMessage For="@(() => Model.VideoUrl)" />
         </div>
         <div class="form-check">
             <InputCheckbox type="checkbox" class="form-check-input" @bind-Value="Model.SendSuccessEmail" />
             <label>
-                Send Success Email
+                @Loc["TextSendSuccessEmail"]
             </label>
         </div>
         <div class="form-group">
             @if (IsUploading == false)
             {
-                <button type="submit" class="btn btn-primary">Upload</button>
+                <button type="submit" class="btn btn-primary">@Loc["TextUpload"]</button>
             }
             else
             {
