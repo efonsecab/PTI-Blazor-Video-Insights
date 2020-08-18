@@ -6,8 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>PTIBlazorVideoInsightsCourse</title>
     <base href="/" />
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
     <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet" />
     <link href="css/app.css" rel="stylesheet" />
+    <link href="css/customStyles.css" rel="stylesheet" />
     <link href="manifest.json" rel="manifest" />
     <script src="https://breakdown.blob.core.windows.net/public/vb.widgets.mediator.js"></script>
     <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png" />
@@ -23,6 +25,10 @@
     </div>
     <script src="_framework/blazor.webassembly.js"></script>
     <script>navigator.serviceWorker.register('service-worker.js');</script>
+    <script>window.blazorCulture = {
+            get: () => window.localStorage['BlazorCulture'],
+            set: (value) => window.localStorage['BlazorCulture'] = value
+        };</script>
 </body>
 
 </html>

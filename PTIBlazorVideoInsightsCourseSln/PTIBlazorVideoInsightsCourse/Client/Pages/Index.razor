@@ -1,7 +1,37 @@
 ﻿@page "/"
+@inject Microsoft.Extensions.Localization.IStringLocalizer<Index> Loc
 
-<h1>Hello, world!</h1>
+<h1>@Title</h1>
+<div class="row">
+    <p>@WelcomeMessage</p>
+</div>
+<div class="row">
+    <a href="@CourseUrl" target="_blank">@CourseUrl</a>
+</div>
 
-Welcome to your new app.
+@code
+{
+    private string Title
+    {
+        get
+        {
+            return Loc["Title"];
+        }
+    }
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+    private string WelcomeMessage
+    {
+        get
+        {
+            return Loc["WelcomeMessage"];
+        }
+    }
+
+    private string CourseUrl
+    {
+        get
+        {
+            return Loc["CourseUrl"];
+        }
+    }
+}

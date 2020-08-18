@@ -11,6 +11,8 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Build" Version="3.2.1" PrivateAssets="all" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="3.2.1" PrivateAssets="all" />
     <PackageReference Include="System.Net.Http.Json" Version="3.2.0" />
+    <PackageReference Include="PTI.Blazor.Components" Version="0.1.1-beta" />
+    <PackageReference Include="Microsoft.Extensions.Localization" Version="3.1.7" />
   </ItemGroup>
 
   <ItemGroup>
@@ -20,5 +22,5 @@
   <ItemGroup>
     <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
   </ItemGroup>
-
+  
 </Project>

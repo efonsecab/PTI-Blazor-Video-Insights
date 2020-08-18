@@ -10,4 +10,7 @@
     <Folder Include="Models\AzureVideoIndexer\ListVideos\" />
     <Folder Include="Models\AzureVideoIndexer\SearchVideos\" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="System.ComponentModel.Annotations" Version="4.7.0" />
+  </ItemGroup>
 </Project>

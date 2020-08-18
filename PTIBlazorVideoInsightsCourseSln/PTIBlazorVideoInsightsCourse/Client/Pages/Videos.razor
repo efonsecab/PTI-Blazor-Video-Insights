@@ -1,8 +1,17 @@
 ﻿@page "/Videos"
 @using PTIBlazorVideoInsightsCourse.Shared.Models.AzureVideoIndexer.ListVideos
+@using PTI.BlazorComponents.SocialNetworks.Twitter
+@using PTI.BlazorComponents.SocialNetworks.LinkedIn
 @inject HttpClient httpClient
+@inject NavigationManager NavManager
 
 <h1>Videos</h1>
+<div class="row">
+    <!--Linked Buttons does not seem to support sharing url when is set to localhost, for dev, you may want to change it-->
+    <!--https://stackoverflow.com/questions/5861550/error-when-using-linkedins-share-button-->
+    <LinkedInShareButton UrlToShare="@EncodedCurrentUrl"
+                         AddPlatformScript="true"></LinkedInShareButton>
+</div>
 @if (IsLoading)
 {
     <div class="d-flex justify-content-center">
@@ -13,6 +22,12 @@
 }
 else
 {
+    <div class="row">
+        <TwitterShareButton AddWidgetsScript="true"
+                            TweetText="Check these videos!"
+                            UrlToShare="@EncodedCurrentUrl"
+                            HashTags="Blazor,dotnet,dotnetcore"></TwitterShareButton>
+    </div>
     <div class="row">
         @foreach (var videoInfo in this.VideosResponse.results)
         {
@@ -37,8 +52,16 @@ else
 
     private ListVideosResponse VideosResponse { get; set; }
     private Dictionary<string, string> VideosThumbnails { get; set; }
-    private Dictionary<string,string> VideosPageUrls { get; set; }
+    private Dictionary<string, string> VideosPageUrls { get; set; }
     private bool IsLoading { get; set; } = false;
+
+    private string EncodedCurrentUrl
+    {
+        get
+        {
+            return System.Web.HttpUtility.UrlPathEncode(NavManager.Uri);
+        }
+    }
 
 
     protected override async Task OnInitializedAsync()
