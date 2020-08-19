@@ -1,4 +1,5 @@
 ﻿@page "/Search"
+@layout PTIBlazorVideoInsightsCourse.Client.Themes.PTI.PTIDefaultLayout
 @using SV = PTIBlazorVideoInsightsCourse.Shared.Models.AzureVideoIndexer.SearchVideos
 @using PTIBlazorVideoInsightsCourse.Client.CustomComponents
 @inject HttpClient httpClient
@@ -6,7 +7,8 @@
 <div class="container">
     <div class="form-group">
         <input type="text" class="form-control" placeholder="Type text to search" @bind="@Keyword" />
-        <button type="button" class="btn btn-primary" @onclick="SearchVideos">Search</button>
+        <button type="button" class="@CurrentTheme.PrimaryButtonClass"
+                @onclick="SearchVideos">Search</button>
     </div>
 </div>
 
@@ -38,6 +40,8 @@ else
 
 @code
 {
+    [CascadingParameter]
+    private Themes.ThemeConfiguration CurrentTheme { get; set; }
     private string Keyword { get; set; }
     private string Message { get; set; }
     private SV.SearchVideosResponse FoundVideos { get; set; }
@@ -47,6 +51,7 @@ else
 
     private async Task SearchVideos()
     {
+        //throw new NotImplementedException();
         this.IsLoading = true;
         string location = await httpClient.GetStringAsync("VideoIndexer/GetLocation");
         this.FoundVideos = await httpClient.GetFromJsonAsync<SV.SearchVideosResponse>($"VideoIndexer" +

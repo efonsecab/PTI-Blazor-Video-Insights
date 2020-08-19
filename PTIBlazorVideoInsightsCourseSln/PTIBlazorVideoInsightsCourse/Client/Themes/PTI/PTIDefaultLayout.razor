@@ -1,0 +1,31 @@
+﻿@using PTIBlazorVideoInsightsCourse.Client.Themes
+@inherits LayoutComponentBase
+
+<div class="sidebar">
+    <NavMenu />
+</div>
+
+<div class="main @CurrentTheme.MainContainerClass">
+    <CascadingValue Value="@CurrentTheme">
+        <div class="top-row px-4">
+            <a href="http://blazor.net" target="_blank" class="ml-md-auto">About</a>
+        </div>
+        <div class="content px-4">
+            <div class="container">
+                <LanguageSelector></LanguageSelector>
+            </div>
+            <div class="container">
+                @Body
+            </div>
+        </div>
+    </CascadingValue>
+</div>
+@code {
+    private ThemeConfiguration CurrentTheme { get; set; } =
+        new ThemeConfiguration()
+        {
+            PrimaryButtonClass = "btn btn-warning",
+            RequiredFieldIndicatorClass = "text-danger",
+            MainContainerClass= "bg-light text-dark"
+        };
+}

@@ -1,4 +1,6 @@
 ﻿@using Microsoft.Extensions.Configuration
+@layout PTIBlazorVideoInsightsCourse.Client.Themes.PTI.PTIDefaultLayout
+@using PTIBlazorVideoInsightsCourse.Client.Themes
 @inject Microsoft.Extensions.Localization.IStringLocalizer<NavMenu> Loc
 @inject IConfiguration configuration
 <div class="top-row pl-4 navbar navbar-dark">
@@ -36,6 +38,8 @@
 </div>
 
 @code {
+    [CascadingParameter]
+    private ThemeConfiguration CurrentTheme { get; set; }
     private string LogoUrl
     {
         get

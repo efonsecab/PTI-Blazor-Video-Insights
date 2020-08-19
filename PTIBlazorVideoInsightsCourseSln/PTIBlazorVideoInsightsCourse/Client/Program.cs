@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System.Globalization;
 using Microsoft.JSInterop;
+using PTIBlazorVideoInsightsCourse.Shared.CustomLogging;
 
 namespace PTIBlazorVideoInsightsCourse.Client
 {
@@ -34,7 +35,14 @@ namespace PTIBlazorVideoInsightsCourse.Client
                 CultureInfo.DefaultThreadCurrentCulture = CultureInfo.CurrentUICulture =
                     CultureInfo.GetCultureInfo("en");
             }
-
+            builder.Services.AddLogging(configure =>
+            {
+                CustomLoggerConfiguration customLoggerConfiguration = 
+                builder.Configuration.GetSection("CustomLoggerConfiguration").Get<CustomLoggerConfiguration>();
+                configure.AddProvider(new CustomLoggerProvider(
+                    customLoggerConfiguration
+                    ));
+            });
 
             await builder.Build().RunAsync();
         }

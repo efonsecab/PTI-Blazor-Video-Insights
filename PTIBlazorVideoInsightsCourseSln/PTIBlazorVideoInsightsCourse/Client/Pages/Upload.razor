@@ -1,4 +1,6 @@
 ﻿@page "/Upload"
+@layout PTIBlazorVideoInsightsCourse.Client.Themes.PTI.PTIDefaultLayout
+@using PTIBlazorVideoInsightsCourse.Client.Themes
 @using PTIBlazorVideoInsightsCourse.Shared
 @inject Microsoft.Extensions.Localization.IStringLocalizer<Upload> Loc
 @inject HttpClient httpClient
@@ -10,7 +12,7 @@
     </ValidationSummary>
     <div class="container">
         <div class="form-group">
-            <span class="requiredField">*</span>
+            <span class="@CurrentTheme.RequiredFieldIndicatorClass">*</span>
             <label>
                 @Loc["TextName"]
             </label>
@@ -18,7 +20,7 @@
             <ValidationMessage For="@(() => Model.Name)" />
         </div>
         <div class="from-group">
-            <span class="requiredField">*</span>
+            <span class="@CurrentTheme.RequiredFieldIndicatorClass">*</span>
             <label>
                 @Loc["TextSourceVideoUrl"]
             </label>
@@ -34,7 +36,7 @@
         <div class="form-group">
             @if (IsUploading == false)
             {
-                <button type="submit" class="btn btn-primary">@Loc["TextUpload"]</button>
+                <button type="submit" class="@CurrentTheme.PrimaryButtonClass">@Loc["TextUpload"]</button>
             }
             else
             {
@@ -52,6 +54,8 @@
 </div>
 
 @code {
+    [CascadingParameter]
+    private ThemeConfiguration CurrentTheme { get; set; }
     private UploadVideoModel Model { get; set; } = new UploadVideoModel();
     private bool IsUploading { get; set; } = false;
     private string Message { get; set; }

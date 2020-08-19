@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
     <RazorLangVersion>3.0</RazorLangVersion>
+    <UserSecretsId>5ee6af21-ee0f-4995-b5aa-ae4a9aafda1d</UserSecretsId>
     <ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
   </PropertyGroup>
 
@@ -13,6 +14,7 @@
     <PackageReference Include="System.Net.Http.Json" Version="3.2.0" />
     <PackageReference Include="PTI.Blazor.Components" Version="0.1.1-beta" />
     <PackageReference Include="Microsoft.Extensions.Localization" Version="3.1.7" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.7" />
   </ItemGroup>
 
   <ItemGroup>
@@ -25,5 +27,7 @@
   
   <ItemGroup>
     <Folder Include="CustomComponents\" />
+    <Folder Include="Themes\" />
+    <Folder Include="Themes\PTI\" />
   </ItemGroup>
 </Project>
