@@ -11,6 +11,9 @@
     <Folder Include="Models\AzureVideoIndexer\SearchVideos\" />
     <Folder Include="Resources\" />
     <Folder Include="CustomLogging\" />
+    <Folder Include="Models\AzureVideoIndexer\GetPersonModels\" />
+    <Folder Include="Models\AzureVideoIndexer\GetPersons\" />
+    <Folder Include="Models\AzureVideoIndexer\GetVideoIndex\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="System.ComponentModel.Annotations" Version="4.7.0" />

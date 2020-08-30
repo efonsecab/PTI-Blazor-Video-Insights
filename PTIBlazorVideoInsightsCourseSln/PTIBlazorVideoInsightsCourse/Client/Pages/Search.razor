@@ -1,4 +1,5 @@
 ﻿@page "/Search"
+@page "/Search/{keyword}"
 @layout PTIBlazorVideoInsightsCourse.Client.Themes.PTI.PTIDefaultLayout
 @using SV = PTIBlazorVideoInsightsCourse.Shared.Models.AzureVideoIndexer.SearchVideos
 @using PTIBlazorVideoInsightsCourse.Client.CustomComponents
@@ -8,46 +9,52 @@
     <div class="form-group">
         <input type="text" class="form-control" placeholder="Type text to search" @bind="@Keyword" />
         <button type="button" class="@CurrentTheme.PrimaryButtonClass"
-                @onclick="SearchVideos">Search</button>
+                @onclick="SearchVideos">
+            Search
+        </button>
     </div>
 </div>
 
 
 @if (IsLoading)
 {
-    <LoadingIndicator></LoadingIndicator>
-}
-else
-{
-    @if (this.FoundVideos != null)
-    {
-        <div class="row">
-            @foreach (var videoInfo in this.FoundVideos.results)
+<LoadingIndicator></LoadingIndicator> }
+            else
             {
-                <VideoCard LinkUrl="@this.VideosPageUrls[videoInfo.id]"
-                           ThumbnailSrc="@this.VideosThumbnails[videoInfo.id]"
-                           VideoDescription="@videoInfo.description"
-                           VideoName="@videoInfo.name">
-                </VideoCard>
-            }
-        </div>
-    }
-    <div class="row">
-        @Message
-    </div>
-}
+@if (this.FoundVideos != null)
+{
+<div class="row">
+    @foreach (var videoInfo in this.FoundVideos.results)
+    {
+<VideoCard LinkUrl="@this.VideosPageUrls[videoInfo.id]"
+           ThumbnailSrc="@this.VideosThumbnails[videoInfo.id]"
+           VideoDescription="@videoInfo.description"
+           VideoName="@videoInfo.name">
+</VideoCard>}
+</div>}
+                <div class="row">
+                    @Message
+                </div>}
 
 
 @code
-{
-    [CascadingParameter]
+{ [CascadingParameter]
     private Themes.ThemeConfiguration CurrentTheme { get; set; }
-    private string Keyword { get; set; }
+    [Parameter]
+    public string Keyword { get; set; }
     private string Message { get; set; }
     private SV.SearchVideosResponse FoundVideos { get; set; }
     public bool IsLoading { get; set; }
     private Dictionary<string, string> VideosThumbnails { get; set; } = new Dictionary<string, string>();
     private Dictionary<string, string> VideosPageUrls { get; set; } = new Dictionary<string, string>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (!String.IsNullOrWhiteSpace(this.Keyword))
+        {
+            await SearchVideos();
+        }
+    }
 
     private async Task SearchVideos()
     {
@@ -72,5 +79,4 @@ else
         {
             this.Message = "No data found";
         }
-    }
-}
+    } }
