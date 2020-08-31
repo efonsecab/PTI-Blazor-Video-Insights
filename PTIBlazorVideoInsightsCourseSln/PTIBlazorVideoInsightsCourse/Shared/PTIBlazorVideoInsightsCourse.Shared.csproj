@@ -14,11 +14,13 @@
     <Folder Include="Models\AzureVideoIndexer\GetPersonModels\" />
     <Folder Include="Models\AzureVideoIndexer\GetPersons\" />
     <Folder Include="Models\AzureVideoIndexer\GetVideoIndex\" />
+    <Folder Include="Helpers\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="System.ComponentModel.Annotations" Version="4.7.0" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="3.1.7" />
     <PackageReference Include="Microsoft.Azure.Cosmos.Table" Version="1.0.7" />
+    <PackageReference Include="System.Net.Http.Json" Version="3.2.0" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Update="Resources\UploadVideoModel.resx">

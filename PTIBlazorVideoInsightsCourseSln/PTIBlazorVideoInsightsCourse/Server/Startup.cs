@@ -35,6 +35,7 @@ namespace PTIBlazorVideoInsightsCourse.Server
             services.AddSingleton(azureConfiguration);
             services.AddControllersWithViews();
             services.AddRazorPages();
+            services.AddHostedService<IndexedPersonsService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
