@@ -1,0 +1,16 @@
+﻿@page "/Keywords"
+<div class="container">
+    @if (this.KeywordsInfoResult != null)
+    {
+        <ul class="list-group">
+            @foreach (var singleKeyword in this.KeywordsInfoResult)
+            {
+            <li class="list-group-item list-group-item-secondary">
+                <span class="badge badge-primary badge-pill">@singleKeyword.Appeareances</span>
+                <a href="Search/@singleKeyword.Keyword">@singleKeyword.Keyword</a>
+
+            </li>
+            }
+        </ul>
+    }
+</div>

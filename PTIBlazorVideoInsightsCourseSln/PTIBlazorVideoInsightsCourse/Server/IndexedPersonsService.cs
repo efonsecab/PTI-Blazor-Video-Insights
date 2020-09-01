@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -29,10 +30,14 @@ namespace PTIBlazorVideoInsightsCourse.Server
         {
             while (!stoppingToken.IsCancellationRequested)
             {
+                await Task.Yield();
                 AzureVideoIndexerHelper helper = new AzureVideoIndexerHelper(this.AzureConfiguration,
                     this.HttpClientFactory.CreateClient());
-                var allPersonsInfo = await helper.GetAllPersonsData();
-                this.MemoryCache.Set<GetAllPersonsModel>(Constants.ALLPERSONS_INFO, allPersonsInfo);
+                var taskGetAllPersonsData = helper.GetAllPersonsData();
+                var taskGetAllKeywordsAction = helper.GetAllKeywords();
+                Task.WaitAll(new Task[] {taskGetAllPersonsData, taskGetAllKeywordsAction });
+                this.MemoryCache.Set<GetAllPersonsModel>(Constants.ALLPERSONS_INFO, taskGetAllPersonsData.Result);
+                this.MemoryCache.Set<List<KeywordInfoModel>>(Constants.ALLVIDEOS_KEYWORDS, taskGetAllKeywordsAction.Result);
                 await Task.Delay(TimeSpan.FromMinutes(5));
             }
         }

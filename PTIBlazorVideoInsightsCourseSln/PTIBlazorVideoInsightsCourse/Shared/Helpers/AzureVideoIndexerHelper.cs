@@ -1,10 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using PTIBlazorVideoInsightsCourse.Shared.Models;
 using PTIBlazorVideoInsightsCourse.Shared.Models.AzureVideoIndexer.GetPersonModels;
 using PTIBlazorVideoInsightsCourse.Shared.Models.AzureVideoIndexer.GetPersons;
+using PTIBlazorVideoInsightsCourse.Shared.Models.AzureVideoIndexer.GetVideoIndex;
+using PTIBlazorVideoInsightsCourse.Shared.Models.AzureVideoIndexer.ListVideos;
 
 namespace PTIBlazorVideoInsightsCourse.Shared.Helpers
 {
@@ -18,6 +22,76 @@ namespace PTIBlazorVideoInsightsCourse.Shared.Helpers
         {
             this.AzureConfiguration = azureConfiguration;
             this.HttpClient = httpClient;
+        }
+
+        public async Task<string> GetVideoAccessTokenStringAsync(string videoId, bool allowEdit)
+        {
+            string requestUrl = $"{this.AzureConfiguration.VideoIndexerConfiguration.BaseAPIUrl}" +
+                $"/Auth/{this.AzureConfiguration.VideoIndexerConfiguration.Location}" +
+                $"/Accounts/{this.AzureConfiguration.VideoIndexerConfiguration.AccountId}" +
+                $"/Videos/{videoId}/AccessToken" +
+                $"?allowEdit={allowEdit}";
+            HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key",
+                this.AzureConfiguration.VideoIndexerConfiguration.SubscriptionKey);
+            var result = await client.GetStringAsync(requestUrl);
+            return result.Replace("\"", string.Empty);
+        }
+
+        public async Task<GetVideoIndexResponse> GetVideoIndex(Shared.Models.AzureVideoIndexer.ListVideos.Result singleVideo)
+        {
+            string videoAccessToken = await this.GetVideoAccessTokenStringAsync(singleVideo.id, true);
+            string requestUrl = $"https://api.videoindexer.ai" +
+                $"/{this.AzureConfiguration.VideoIndexerConfiguration.Location}" +
+                $"/Accounts/{this.AzureConfiguration.VideoIndexerConfiguration.AccountId}" +
+                $"/Videos/{singleVideo.id}" +
+                $"/Index" +
+                $"?accessToken={videoAccessToken}";
+            var videoIndexResult = await this.HttpClient.GetFromJsonAsync<GetVideoIndexResponse>(requestUrl);
+            return videoIndexResult;
+        }
+
+        public async Task<ListVideosResponse> GetAllVideos()
+        {
+            var accountAccessToken =
+                await this.GetAccountAccessTokenString(false);
+            string requestUrl = $"{this.AzureConfiguration.VideoIndexerConfiguration.BaseAPIUrl}" +
+                $"/{this.AzureConfiguration.VideoIndexerConfiguration.Location}" +
+                $"/Accounts/{this.AzureConfiguration.VideoIndexerConfiguration.AccountId}" +
+                $"/Videos?accessToken={accountAccessToken}";
+            var result = await this.HttpClient.GetFromJsonAsync<ListVideosResponse>(requestUrl);
+            return result;
+        }
+
+        public async Task<List<KeywordInfoModel>> GetAllKeywords()
+        {
+            List<KeywordInfoModel> lstKeywords = new List<KeywordInfoModel>();
+            var allVideos = await this.GetAllVideos();
+            foreach (var singleVideo in allVideos.results)
+            {
+                var singleVideoIndex = await this.GetVideoIndex(singleVideo);
+                if (singleVideoIndex.summarizedInsights.keywords.Count() > 0)
+                {
+                    foreach (var singleKeyword in singleVideoIndex.summarizedInsights.keywords)
+                    {
+                        var existentKeyWordInfo = lstKeywords.Where(p => p.Keyword == singleKeyword.name).SingleOrDefault();
+                        if (existentKeyWordInfo != null)
+                        {
+                            existentKeyWordInfo.Appeareances += singleKeyword.appearances.Count();
+                        }
+                        else
+                        {
+                            existentKeyWordInfo = new KeywordInfoModel()
+                            {
+                                Keyword = singleKeyword.name,
+                                Appeareances = singleKeyword.appearances.Count()
+                            };
+                            lstKeywords.Add(existentKeyWordInfo);
+                        }
+                    }
+                }
+            }
+            return lstKeywords.Distinct().ToList();
         }
 
         public async Task<GetAllPersonsModel> GetAllPersonsData()
