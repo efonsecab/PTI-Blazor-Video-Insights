@@ -1,0 +1,31 @@
+﻿@page "/PersonsModels"
+
+@if (IsLoading)
+{
+    <LoadingIndicator></LoadingIndicator>
+}
+else
+{
+    @if (this.PersonsModelsResult != null && this.PersonsModelsResult.Length > 0)
+    {
+        <div class="row">
+            <div class="col">Id</div>
+            <div class="col">Is Default</div>
+            <div class="col">Name</div>
+            <div class="col">Persons Count</div>
+        </div>
+        foreach (var personModelInfo in this.PersonsModelsResult)
+        {
+            <div class="row">
+                <div class="col">
+                    <a href="Persons/@personModelInfo.id">@personModelInfo.id</a>
+                </div>
+                <div class="col">
+                    @personModelInfo.isDefault
+                </div>
+                <div class="col">@personModelInfo.name</div>
+                <div class="col">@personModelInfo.personsCount</div>
+            </div>
+        }
+    }
+}

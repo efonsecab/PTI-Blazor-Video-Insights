@@ -1,0 +1,48 @@
+﻿@page "/Persons/{personModelId}"
+@page "/Persons"
+
+@if (this.IsLoading)
+{
+    <div class="d-flex justify-content-center">
+        <div class="spinner-border" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+
+}
+else
+{
+    if (this.PersonsResult != null && this.PersonsResult.results.Count > 0)
+    {
+        foreach (var singlePerson in this.PersonsResult.results)
+        {
+            <div class="row">
+                <div class="col-md-6">
+                    <img src="@this.PersonsPictures[singlePerson.id]" class="img-thumbnail" style="max-width:100px; max-height:100px;" />
+                </div>
+                <div class="col-md-6">
+                    @singlePerson.name
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        if (this.GetAllPersonsResult != null && this.GetAllPersonsResult.Persons.Count > 0)
+        {
+            foreach (var singlePerson in this.GetAllPersonsResult.Persons)
+            {
+                <div class="row">
+                    <div class="col-md-6">
+                        <a href="Search/@singlePerson.PersonName">
+                            <img src="@($"data:image/gif;base64,{singlePerson.PersonPictureBase64}")" class="img-thumbnail" style="max-width:100px; max-height:100px;" />
+                        </a>
+                    </div>
+                    <div class="col-md-6">
+                        @singlePerson.PersonName
+                    </div>
+                </div>
+            }
+        }
+    }
+}

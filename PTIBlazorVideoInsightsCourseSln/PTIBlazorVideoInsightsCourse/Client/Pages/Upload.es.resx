@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>2.0</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+  <data name="TextTypeVideoName" xml:space="preserve">
+    <value>Digite el nombre deseado para su video</value>
+  </data>
+  <data name="TextTypeSourceVideoUrl" xml:space="preserve">
+    <value>Digite el url del video a indexar</value>
+  </data>
+  <data name="TextSendSuccessEmail" xml:space="preserve">
+    <value>Enviar correo al finalizar indexación</value>
+  </data>
+  <data name="TextUpload" xml:space="preserve">
+    <value>Subir</value>
+  </data>
+  <data name="TextName" xml:space="preserve">
+    <value>Nombre</value>
+  </data>
+  <data name="TextSourceVideoUrl" xml:space="preserve">
+    <value>Url de video a indexar</value>
+  </data>
+</root>
