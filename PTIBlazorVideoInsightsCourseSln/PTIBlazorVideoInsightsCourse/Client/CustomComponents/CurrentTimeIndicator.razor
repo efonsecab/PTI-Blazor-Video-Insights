@@ -1,0 +1,42 @@
+﻿<input @bind="CurrentDateTime" @bind:format="MM/dd/yyyy hh:mm:ss:tt" readonly style="width:300px;" />
+<button @onclick="Stop">Stop</button>
+<button @onclick="Start">Start</button>
+@code
+{
+    private static DateTimeOffset CurrentDateTime { get; set; }
+    [Parameter]
+    public System.Threading.CancellationTokenSource CancellationTokenSource { get; set; }
+    = new System.Threading.CancellationTokenSource();
+
+    private void Stop()
+    {
+        this.CancellationTokenSource.Cancel();
+    }
+
+    private async Task Start()
+    {
+        this.CancellationTokenSource = new System.Threading.CancellationTokenSource();
+        await setInterval(1000, this.SetCurrentTimeAction, this.CancellationTokenSource);
+    }
+
+    private Action SetCurrentTimeAction = () =>
+    {
+        CurrentDateTime = DateTimeOffset.UtcNow;
+    };
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Start();
+    }
+
+    private async Task setInterval(int milliseconds, Action actionToExecute,
+        System.Threading.CancellationTokenSource cancellationToken)
+    {
+        while (!cancellationToken.IsCancellationRequested)
+        {
+            actionToExecute();
+            StateHasChanged();
+            await Task.Delay(milliseconds);
+        }
+    }
+}
